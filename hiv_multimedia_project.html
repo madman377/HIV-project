@@ -1,0 +1,332 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--color-text-primary); }
+  .site { max-width: 900px; margin: 0 auto; padding: 1rem; }
+  .hero { background: #0a1628; color: white; border-radius: 16px; padding: 3rem 2.5rem; margin-bottom: 2rem; position: relative; overflow: hidden; }
+  .hero::before { content: 'HIV'; position: absolute; right: -20px; top: -30px; font-size: 200px; font-weight: 900; color: rgba(255,255,255,0.04); pointer-events: none; }
+  .hero-badge { display: inline-block; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #a0c4ff; font-size: 12px; font-weight: 500; padding: 4px 14px; border-radius: 20px; margin-bottom: 1rem; letter-spacing: 1px; text-transform: uppercase; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.2rem; line-height: 1.1; margin-bottom: 1rem; }
+  .hero h1 span { color: #60a5fa; }
+  .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 560px; line-height: 1.7; }
+  .hero-stats { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+  .hero-stat { border-left: 2px solid #60a5fa; padding-left: 1rem; }
+  .hero-stat .num { font-size: 1.6rem; font-weight: 700; color: white; }
+  .hero-stat .lbl { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
+  nav button { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--color-text-secondary); transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  nav button:hover, nav button.active { background: #1e3a5f; color: white; border-color: #1e3a5f; }
+  .section { display: none; }
+  .section.visible { display: block; }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .card-title { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.75rem; }
+  .card h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 0.75rem; }
+  .card p { color: var(--color-text-secondary); line-height: 1.7; font-size: 15px; }
+  .terms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .term { background: var(--color-background-secondary); border-radius: 8px; padding: 1rem; }
+  .term .word { font-weight: 500; font-size: 14px; color: #3b82f6; margin-bottom: 4px; }
+  .term .def { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .stage { border-left: 3px solid; padding: 1rem 1rem 1rem 1.5rem; margin-bottom: 1rem; border-radius: 0 8px 8px 0; }
+  .stage-1 { border-color: #f59e0b; background: rgba(245,158,11,0.06); }
+  .stage-2 { border-color: #3b82f6; background: rgba(59,130,246,0.06); }
+  .stage-3 { border-color: #ef4444; background: rgba(239,68,68,0.06); }
+  .stage .name { font-weight: 500; font-size: 15px; margin-bottom: 4px; }
+  .stage .desc { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+  .symptoms-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+  .symptom { background: var(--color-background-secondary); border-radius: 8px; padding: 10px 14px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .symptom::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; flex-shrink: 0; }
+  .transmission-list .item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .transmission-list .item:last-child { border-bottom: none; }
+  .icon-box { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; background: rgba(59,130,246,0.1); }
+  .item-text strong { display: block; font-size: 14px; font-weight: 500; }
+  .item-text span { font-size: 13px; color: var(--color-text-secondary); }
+  .no-item .icon-box { background: rgba(239,68,68,0.1); }
+  .treatment-card { background: var(--color-background-secondary); border-radius: 10px; padding: 1.25rem; margin-bottom: 10px; }
+  .treatment-card h3 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+  .treatment-card p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+  .complication { background: var(--color-background-secondary); border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+  .comp-dot { width: 10px; height: 10px; border-radius: 50%; background: #ef4444; margin-top: 5px; flex-shrink: 0; }
+  .complication strong { display: block; font-size: 14px; font-weight: 500; }
+  .complication span { font-size: 13px; color: var(--color-text-secondary); }
+  .source-item { padding: 1rem; border: 0.5px solid var(--color-border-tertiary); border-radius: 10px; margin-bottom: 10px; }
+  .source-item a { color: #3b82f6; font-size: 14px; font-weight: 500; text-decoration: none; }
+  .source-item p { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+  .quiz-q { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .quiz-q:last-child { border-bottom: none; }
+  .quiz-q p { font-size: 15px; font-weight: 500; margin-bottom: 10px; }
+  .quiz-q .opts { display: flex; flex-direction: column; gap: 6px; }
+  .quiz-q .opt { padding: 8px 14px; border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.15s; background: var(--color-background-primary); color: var(--color-text-primary); font-family: 'DM Sans', sans-serif; text-align: left; }
+  .quiz-q .opt:hover { border-color: #3b82f6; background: rgba(59,130,246,0.06); }
+  .quiz-q .opt.correct { background: rgba(16,185,129,0.12); border-color: #10b981; color: #065f46; }
+  .quiz-q .opt.wrong { background: rgba(239,68,68,0.1); border-color: #ef4444; }
+  .feedback { font-size: 13px; margin-top: 8px; color: var(--color-text-secondary); display: none; }
+  .score-bar { width: 100%; height: 8px; background: var(--color-background-secondary); border-radius: 4px; margin: 1rem 0 0.5rem; overflow: hidden; }
+  .score-fill { height: 100%; background: #3b82f6; border-radius: 4px; transition: width 0.4s; width: 0%; }
+</style>
+
+<div class="site">
+  <div class="hero">
+    <div class="hero-badge">Wellness 1 — STD Multimedia Project</div>
+    <h1>Understanding <span>HIV</span><br>Human Immunodeficiency Virus</h1>
+    <p>A comprehensive educational resource covering transmission, symptoms, diagnosis, treatment, and prevention of HIV/AIDS.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">39M+</div><div class="lbl">People living with HIV worldwide</div></div>
+      <div class="hero-stat"><div class="num">3 Stages</div><div class="lbl">Of HIV infection progression</div></div>
+      <div class="hero-stat"><div class="num">No cure</div><div class="lbl">But fully manageable with ART</div></div>
+    </div>
+  </div>
+
+  <nav id="nav">
+    <button class="active" onclick="show('overview')">Overview</button>
+    <button onclick="show('terms')">Key Terms</button>
+    <button onclick="show('transmission')">Transmission</button>
+    <button onclick="show('symptoms')">Symptoms</button>
+    <button onclick="show('testing')">Testing</button>
+    <button onclick="show('treatment')">Treatment</button>
+    <button onclick="show('complications')">Complications</button>
+    <button onclick="show('quiz')">Quiz</button>
+    <button onclick="show('sources')">Sources</button>
+  </nav>
+
+  <div id="overview" class="section visible">
+    <div class="card">
+      <div class="card-title">What is HIV?</div>
+      <h2>The Human Immunodeficiency Virus</h2>
+      <p>HIV (Human Immunodeficiency Virus) is a retrovirus that attacks the body's immune system — specifically the CD4 cells (T cells) — weakening the ability to fight infection and disease. Without treatment, HIV can progress to AIDS (Acquired Immunodeficiency Syndrome), the most severe stage.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">3 Stages of HIV Infection</div>
+      <div class="stage stage-1">
+        <div class="name">Stage 1 — Acute HIV Infection</div>
+        <div class="desc">Develops 2–4 weeks after infection. Flu-like symptoms appear. Viral load is very high and transmission risk is greatest. Many people don't realize they have HIV at this stage.</div>
+      </div>
+      <div class="stage stage-2">
+        <div class="name">Stage 2 — Chronic HIV Infection (Clinical Latency)</div>
+        <div class="desc">HIV multiplies at low levels. May last a decade or longer with treatment. People may have no symptoms but can still transmit the virus. ART can keep people in this stage for decades.</div>
+      </div>
+      <div class="stage stage-3">
+        <div class="name">Stage 3 — AIDS (Acquired Immunodeficiency Syndrome)</div>
+        <div class="desc">CD4 count drops below 200 cells/mL. Immune system is severely damaged. Without treatment, survival is about 3 years. Opportunistic infections become life-threatening.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="terms" class="section">
+    <div class="card">
+      <div class="card-title">Key Vocabulary</div>
+      <h2>Important Terms to Know</h2>
+      <div class="terms-grid">
+        <div class="term"><div class="word">HIV</div><div class="def">Human Immunodeficiency Virus — the virus that causes AIDS.</div></div>
+        <div class="term"><div class="word">AIDS</div><div class="def">Acquired Immunodeficiency Syndrome — the final, most severe stage of HIV infection.</div></div>
+        <div class="term"><div class="word">CD4 Cells</div><div class="def">T-lymphocytes targeted by HIV. Low CD4 count (under 200) signals AIDS.</div></div>
+        <div class="term"><div class="word">Viral Load</div><div class="def">The amount of HIV in the blood. Lower = better. Undetectable = untransmittable.</div></div>
+        <div class="term"><div class="word">ART</div><div class="def">Antiretroviral Therapy — daily medications that suppress HIV replication.</div></div>
+        <div class="term"><div class="word">PrEP</div><div class="def">Pre-Exposure Prophylaxis — medicine taken by HIV-negative people to prevent infection.</div></div>
+        <div class="term"><div class="word">PEP</div><div class="def">Post-Exposure Prophylaxis — emergency medication taken after possible HIV exposure.</div></div>
+        <div class="term"><div class="word">Undetectable</div><div class="def">Viral load so low it can't be measured. Person cannot sexually transmit HIV.</div></div>
+        <div class="term"><div class="word">Opportunistic Infection</div><div class="def">Infections that occur because HIV has weakened the immune system.</div></div>
+        <div class="term"><div class="word">Retrovirus</div><div class="def">A type of virus that inserts its RNA into host cell DNA to replicate.</div></div>
+        <div class="term"><div class="word">Seroconversion</div><div class="def">The point when HIV antibodies become detectable in the blood after infection.</div></div>
+        <div class="term"><div class="word">U=U</div><div class="def">Undetectable = Untransmittable — a scientifically confirmed prevention concept.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="transmission" class="section">
+    <div class="card">
+      <div class="card-title">How HIV Spreads</div>
+      <h2>Transmission Routes</h2>
+      <p style="margin-bottom: 1.25rem;">HIV is spread through specific body fluids from a person who has HIV. These fluids must enter the bloodstream, a mucous membrane, or damaged tissue of an HIV-negative person.</p>
+      <div class="transmission-list">
+        <div class="item"><div class="icon-box">⬆</div><div class="item-text"><strong>Sexual Contact</strong><span>Most common route. Anal or vaginal sex without protection. Receptive anal sex carries the highest risk.</span></div></div>
+        <div class="item"><div class="icon-box">⬆</div><div class="item-text"><strong>Sharing Needles / Syringes</strong><span>Injecting drug use with shared equipment allows direct blood-to-blood transmission.</span></div></div>
+        <div class="item"><div class="icon-box">⬆</div><div class="item-text"><strong>Mother to Child (Perinatal)</strong><span>Can pass during pregnancy, childbirth, or breastfeeding. Treatment dramatically reduces this risk.</span></div></div>
+        <div class="item"><div class="icon-box">⬆</div><div class="item-text"><strong>Blood Transfusion</strong><span>Rare in the U.S. due to thorough screening of the blood supply since 1985.</span></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">HIV Cannot Spread Through</div>
+      <div class="transmission-list">
+        <div class="item no-item"><div class="icon-box" style="background:rgba(239,68,68,0.1)">✕</div><div class="item-text"><strong>Casual Contact</strong><span>Hugging, shaking hands, sharing dishes or toilet seats does not transmit HIV.</span></div></div>
+        <div class="item no-item"><div class="icon-box" style="background:rgba(239,68,68,0.1)">✕</div><div class="item-text"><strong>Saliva, Tears, or Sweat</strong><span>These body fluids do not contain enough HIV to transmit the virus.</span></div></div>
+        <div class="item no-item"><div class="icon-box" style="background:rgba(239,68,68,0.1)">✕</div><div class="item-text"><strong>Insects or Mosquitoes</strong><span>Extensive CDC research has found no evidence of HIV transmission through insects.</span></div></div>
+        <div class="item no-item"><div class="icon-box" style="background:rgba(239,68,68,0.1)">✕</div><div class="item-text"><strong>Air or Water</strong><span>HIV does not survive long outside the human body and cannot be transmitted this way.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="symptoms" class="section">
+    <div class="card">
+      <div class="card-title">Stage 1 — Acute Phase (2–4 weeks after infection)</div>
+      <h2>Early Flu-Like Symptoms</h2>
+      <p style="margin-bottom: 1rem;">Not everyone notices symptoms. Those who do may experience:</p>
+      <div class="symptoms-list">
+        <div class="symptom">Fever</div>
+        <div class="symptom">Headache</div>
+        <div class="symptom">Rash</div>
+        <div class="symptom">Sore throat</div>
+        <div class="symptom">Swollen lymph nodes</div>
+        <div class="symptom">Muscle aches</div>
+        <div class="symptom">Joint pain</div>
+        <div class="symptom">Fatigue</div>
+        <div class="symptom">Night sweats</div>
+        <div class="symptom">Mouth sores</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Stage 2 — Clinical Latency</div>
+      <h2>Often No Symptoms</h2>
+      <p>During chronic HIV infection, many people have no symptoms at all. This stage can last a decade or more with proper treatment. However, the virus is still active and can be transmitted to others.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Stage 3 — AIDS</div>
+      <h2>Severe Immune Damage</h2>
+      <p>At this stage, the immune system is severely compromised. Symptoms can include rapid weight loss, recurring fever, extreme fatigue, prolonged diarrhea, pneumonia, memory loss, depression, and mouth/skin sores. Opportunistic infections and certain cancers (like Kaposi's sarcoma) become common.</p>
+    </div>
+  </div>
+
+  <div id="testing" class="section">
+    <div class="card">
+      <div class="card-title">Getting Tested</div>
+      <h2>HIV Testing & Diagnosis</h2>
+      <p>The only way to know your HIV status is to get tested. The CDC recommends everyone aged 13–64 get tested at least once, and those at higher risk get tested more frequently.</p>
+    </div>
+    <div class="treatment-card">
+      <h3>Antibody Tests (Most Common)</h3>
+      <p>Detect antibodies the body produces in response to HIV. Results available in 20–30 minutes with rapid tests. Most accurate 23–90 days after exposure (the "window period").</p>
+    </div>
+    <div class="treatment-card">
+      <h3>Antigen/Antibody Tests</h3>
+      <p>Recommended for labs and some rapid tests. Can detect both HIV antibodies and the p24 antigen. Can identify HIV sooner — within 18–45 days of exposure.</p>
+    </div>
+    <div class="treatment-card">
+      <h3>Nucleic Acid Tests (NAT)</h3>
+      <p>Look for actual HIV in the blood. Can detect HIV 10–33 days after exposure. Used for people with recent high-risk exposure or early symptoms, or to confirm other positive results.</p>
+    </div>
+    <div class="card" style="background: rgba(59,130,246,0.06); border-color: rgba(59,130,246,0.3);">
+      <p style="font-size: 14px; color: var(--color-text-primary);">Free, confidential HIV tests are available at health departments, community health centers, and many pharmacies. At-home test kits are also available.</p>
+    </div>
+  </div>
+
+  <div id="treatment" class="section">
+    <div class="card">
+      <div class="card-title">Managing HIV</div>
+      <h2>Treatment Options</h2>
+      <p style="margin-bottom: 1rem;">There is no cure for HIV, but antiretroviral therapy (ART) allows people with HIV to live long, healthy lives and prevents transmission.</p>
+    </div>
+    <div class="treatment-card">
+      <h3>Antiretroviral Therapy (ART)</h3>
+      <p>A combination of HIV medicines taken daily. ART suppresses HIV so it cannot replicate, lowers viral load to undetectable levels, protects the immune system, and prevents progression to AIDS. The goal is viral suppression to under 200 copies/mL — ideally undetectable.</p>
+    </div>
+    <div class="treatment-card">
+      <h3>PrEP (Pre-Exposure Prophylaxis)</h3>
+      <p>A daily pill for HIV-negative people at higher risk. When taken consistently, PrEP reduces the risk of getting HIV from sex by about 99%, and from injection drug use by over 74%.</p>
+    </div>
+    <div class="treatment-card">
+      <h3>PEP (Post-Exposure Prophylaxis)</h3>
+      <p>Emergency medication taken within 72 hours of possible HIV exposure. Must be taken for 28 days. The sooner it's started, the more effective it is.</p>
+    </div>
+    <div class="treatment-card">
+      <h3>Other Prevention Tools</h3>
+      <p>Consistent and correct condom use, never sharing needles, regular STI testing, and choosing lower-risk sexual behaviors all reduce HIV transmission risk.</p>
+    </div>
+  </div>
+
+  <div id="complications" class="section">
+    <div class="card">
+      <div class="card-title">If Left Untreated</div>
+      <h2>Possible Complications</h2>
+      <p style="margin-bottom: 1.25rem;">Without ART, HIV progressively weakens the immune system, leading to AIDS and life-threatening conditions:</p>
+      <div class="complication"><div class="comp-dot"></div><div><strong>Opportunistic Infections</strong><span>Pneumocystis pneumonia (PCP), tuberculosis, toxoplasmosis, and cytomegalovirus that a healthy immune system would normally fight off.</span></div></div>
+      <div class="complication"><div class="comp-dot"></div><div><strong>Certain Cancers</strong><span>Kaposi's sarcoma, lymphoma, and cervical cancer occur at higher rates in people with AIDS due to a weakened immune system.</span></div></div>
+      <div class="complication"><div class="comp-dot"></div><div><strong>Neurological Complications</strong><span>HIV can cause dementia, memory loss, depression, and anxiety. About 50% of people with HIV experience neurological issues.</span></div></div>
+      <div class="complication"><div class="comp-dot"></div><div><strong>Wasting Syndrome</strong><span>Involuntary weight loss of 10%+ of body weight combined with diarrhea, fever, or weakness for more than 30 days.</span></div></div>
+      <div class="complication"><div class="comp-dot"></div><div><strong>Cardiovascular Disease</strong><span>People with HIV have a higher risk of heart disease and metabolic complications, even with treatment.</span></div></div>
+      <div class="complication"><div class="comp-dot"></div><div><strong>Type 2 Diabetes</strong><span>People with HIV/AIDS are up to 4 times more likely to develop type 2 diabetes than those without the virus.</span></div></div>
+      <div class="complication"><div class="comp-dot" style="background:#f59e0b"></div><div><strong>With Treatment</strong><span>ART dramatically reduces all of these risks. People on effective ART can achieve a near-normal life expectancy.</span></div></div>
+    </div>
+  </div>
+
+  <div id="quiz" class="section">
+    <div class="card">
+      <div class="card-title">Test Your Knowledge</div>
+      <h2>10-Question Quiz</h2>
+      <div style="margin-bottom: 1.5rem;">
+        <div class="score-bar"><div class="score-fill" id="score-fill"></div></div>
+        <p id="score-text" style="font-size: 13px; color: var(--color-text-secondary);">Answer all questions to see your score.</p>
+      </div>
+      <div id="quiz-container"></div>
+    </div>
+  </div>
+
+  <div id="sources" class="section">
+    <div class="card">
+      <div class="card-title">Works Cited</div>
+      <h2>Sources Used</h2>
+      <div class="source-item"><a href="https://www.cdc.gov/hiv/about/index.html" target="_blank">Centers for Disease Control and Prevention (CDC) — About HIV</a><p>CDC. "About HIV." Centers for Disease Control and Prevention, U.S. Department of Health and Human Services, 2025. cdc.gov/hiv/about/index.html</p></div>
+      <div class="source-item"><a href="https://hivinfo.nih.gov/understanding-hiv/fact-sheets/stages-hiv-infection" target="_blank">National Institutes of Health (NIH) — Stages of HIV Infection</a><p>NIH. "The Stages of HIV Infection." HIVinfo, National Institutes of Health, 2025. hivinfo.nih.gov/understanding-hiv/fact-sheets/stages-hiv-infection</p></div>
+      <div class="source-item"><a href="https://www.mayoclinic.org/diseases-conditions/hiv-aids/symptoms-causes/syc-20373524" target="_blank">Mayo Clinic — HIV/AIDS: Symptoms and Causes</a><p>Mayo Clinic Staff. "HIV/AIDS — Symptoms and Causes." Mayo Clinic, 2024. mayoclinic.org/diseases-conditions/hiv-aids/symptoms-causes/syc-20373524</p></div>
+      <div class="source-item"><a href="https://www.cdc.gov/hiv/causes/index.html" target="_blank">Centers for Disease Control and Prevention (CDC) — How HIV Spreads</a><p>CDC. "How HIV Spreads." Centers for Disease Control and Prevention, U.S. Department of Health and Human Services, 2025. cdc.gov/hiv/causes/index.html</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const qs = [
+  { q: "What does HIV stand for?", opts: ["Human Immunodeficiency Virus","High Infectious Viral agent","Harmful Internal Virus","Human Influenza Vaccine"], a: 0, f: "HIV stands for Human Immunodeficiency Virus — a retrovirus that attacks the immune system." },
+  { q: "Which cells does HIV primarily attack?", opts: ["Red blood cells","Platelet cells","CD4 T-cells","Stem cells"], a: 2, f: "HIV targets CD4 T-cells (T lymphocytes), which are critical for maintaining a healthy immune system." },
+  { q: "What is AIDS?", opts: ["A type of flu","The earliest stage of HIV","The most severe stage of HIV infection","A curable bacterial infection"], a: 2, f: "AIDS (Acquired Immunodeficiency Syndrome) is the most severe, final stage of HIV infection." },
+  { q: "A CD4 count below what number indicates AIDS?", opts: ["500 cells/mL","350 cells/mL","200 cells/mL","100 cells/mL"], a: 2, f: "An AIDS diagnosis is given when the CD4 count drops below 200 cells per milliliter of blood." },
+  { q: "Which is the MOST common route of HIV transmission?", opts: ["Insect bites","Sharing food","Anal or vaginal sex without protection","Casual touching"], a: 2, f: "Most people get HIV through anal or vaginal sex, or sharing drug injection equipment." },
+  { q: "What does U=U mean in HIV prevention?", opts: ["Underfunded = Undertreated","Undetectable = Untransmittable","Unknown = Undiagnosed","Untested = Unsafe"], a: 1, f: "U=U means Undetectable = Untransmittable. A person with an undetectable viral load cannot sexually transmit HIV." },
+  { q: "What is PrEP?", opts: ["A vaccine that cures HIV","Post-Exposure Prophylaxis taken after exposure","Pre-Exposure Prophylaxis taken to prevent HIV infection","A type of HIV test"], a: 2, f: "PrEP (Pre-Exposure Prophylaxis) is medication taken by HIV-negative people to prevent getting HIV." },
+  { q: "How is HIV NOT transmitted?", opts: ["Unprotected sex","Sharing needles","Mosquito bites","Mother to child during birth"], a: 2, f: "Extensive CDC research confirms HIV is not transmitted through insect bites." },
+  { q: "What is the main treatment for HIV?", opts: ["Antibiotics","Antiretroviral Therapy (ART)","Antifungal medication","Surgery"], a: 1, f: "Antiretroviral Therapy (ART) is the standard treatment that suppresses HIV replication and allows people to live long, healthy lives." },
+  { q: "Without treatment, how long can people with AIDS typically survive?", opts: ["About 1 year","About 3 years","About 10 years","About 20 years"], a: 1, f: "Without treatment, people with AIDS typically survive about 3 years according to the CDC." },
+];
+
+let answered = 0;
+let correct = 0;
+
+function buildQuiz() {
+  const c = document.getElementById('quiz-container');
+  qs.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    div.innerHTML = `<p>${i+1}. ${q.q}</p><div class="opts">${q.opts.map((o,j) => `<button class="opt" onclick="answer(this,${i},${j})">${o}</button>`).join('')}</div><div class="feedback" id="f${i}">${q.f}</div>`;
+    c.appendChild(div);
+  });
+}
+
+function answer(btn, qi, oi) {
+  const q = qs[qi];
+  const container = btn.closest('.quiz-q');
+  const btns = container.querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  if (oi === q.a) {
+    btn.classList.add('correct');
+    correct++;
+  } else {
+    btn.classList.add('wrong');
+    btns[q.a].classList.add('correct');
+  }
+  const fb = document.getElementById('f' + qi);
+  fb.style.display = 'block';
+  answered++;
+  const fill = document.getElementById('score-fill');
+  fill.style.width = Math.round((correct / answered) * 100) + '%';
+  document.getElementById('score-text').textContent = `${correct} correct out of ${answered} answered (${Math.round((correct/answered)*100)}%)`;
+}
+
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.getElementById(id).classList.add('visible');
+  document.querySelectorAll('#nav button').forEach((b,i) => {
+    const ids = ['overview','terms','transmission','symptoms','testing','treatment','complications','quiz','sources'];
+    b.classList.toggle('active', ids[i] === id);
+  });
+}
+
+buildQuiz();
+</script>
